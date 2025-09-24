@@ -4,7 +4,11 @@ import 'dart:io';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart' as FBP;
 import 'package:flutter_blue_plus_windows/flutter_blue_plus_windows.dart';
 
+int _instanceId = 0;
+
 class FlutterBluePlus {
+  static late final License license;
+
   static Future<void> startScan({
     List<Guid> withServices = const [],
     List<String> withRemoteIds = const [],
@@ -37,6 +41,7 @@ class FlutterBluePlus {
         androidLegacy: androidLegacy,
         androidScanMode: androidScanMode,
         androidUsesFineLocation: androidUsesFineLocation,
+        instanceId: _instanceId++,
       );
     }
 

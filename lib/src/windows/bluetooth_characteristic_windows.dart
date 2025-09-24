@@ -6,6 +6,7 @@ class BluetoothCharacteristicWindows extends BluetoothCharacteristic {
   final Guid? secondaryServiceUuid;
   final Guid characteristicUuid;
   final List<BluetoothDescriptor> descriptors;
+  final int instanceId;
 
   final Properties propertiesWinBle;
 
@@ -15,6 +16,7 @@ class BluetoothCharacteristicWindows extends BluetoothCharacteristic {
     required this.characteristicUuid,
     required this.descriptors,
     required this.propertiesWinBle,
+    required this.instanceId,
     this.secondaryServiceUuid,
   }) : super.fromProto(
           BmBluetoothCharacteristic(
@@ -28,6 +30,7 @@ class BluetoothCharacteristicWindows extends BluetoothCharacteristic {
                   serviceUuid: descriptor.serviceUuid,
                   characteristicUuid: descriptor.characteristicUuid,
                   descriptorUuid: descriptor.uuid,
+                  instanceId: instanceId,
                   primaryServiceUuid: null, // TODO:  API changes
                 ),
             ],
@@ -46,6 +49,7 @@ class BluetoothCharacteristicWindows extends BluetoothCharacteristic {
               // TODO: implementation missing
               indicateEncryptionRequired: false,
             ),
+            instanceId: instanceId,
             primaryServiceUuid: null, // TODO:  API changes
           ),
         );

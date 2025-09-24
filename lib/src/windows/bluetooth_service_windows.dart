@@ -6,6 +6,7 @@ class BluetoothServiceWindows extends BluetoothService {
   final bool isPrimary;
   final List<BluetoothCharacteristic> characteristics;
   final List<BluetoothService> includedServices;
+  final int instanceId;
 
   BluetoothServiceWindows({
     required this.remoteId,
@@ -13,11 +14,12 @@ class BluetoothServiceWindows extends BluetoothService {
     required this.isPrimary,
     required this.characteristics,
     required this.includedServices,
+    required this.instanceId,
   }) : super.fromProto(
           BmBluetoothService(
             remoteId: DeviceIdentifier(remoteId.str),
             serviceUuid: serviceUuid,
-            characteristics: [for (final c in characteristics) c.toProto()],
+            characteristics: [for (final c in characteristics) c.toProto(instanceId)],
             primaryServiceUuid: null,
           ),
         );

@@ -4,7 +4,8 @@
 part of 'windows.dart';
 
 class BluetoothDeviceWindows extends FBP.BluetoothDevice {
-  BluetoothDeviceWindows({required super.remoteId});
+  final int instanceId;
+  BluetoothDeviceWindows({required super.remoteId, required this.instanceId}) : super();
 
   // used for 'servicesStream' public api
   final _services = StreamController<List<BluetoothServiceWindows>>.broadcast();
@@ -18,9 +19,9 @@ class BluetoothDeviceWindows extends FBP.BluetoothDevice {
   ///   - to connect, this device must have been discovered by your app in a previous scan
   ///   - iOS uses 128-bit uuids the remoteId, e.g. e006b3a7-ef7b-4980-a668-1f8005f84383
   ///   - Android uses 48-bit mac addresses as the remoteId, e.g. 06:E5:28:3B:FD:E0
-  static FBP.BluetoothDevice fromId(String remoteId) {
+  static FBP.BluetoothDevice fromId({required String remoteId, required int instanceId}) {
     if (Platform.isWindows) {
-      return BluetoothDeviceWindows(remoteId: DeviceIdentifier(remoteId.toUpperCase()));
+      return BluetoothDeviceWindows(remoteId: DeviceIdentifier(remoteId.toUpperCase()), instanceId: instanceId);
     }
     return FBP.BluetoothDevice.fromId(remoteId);
   }
@@ -92,6 +93,7 @@ class BluetoothDeviceWindows extends FBP.BluetoothDevice {
   bool get isDisconnected => isConnected == false;
 
   Future<void> connect({
+    required License license,
     Duration? timeout = const Duration(seconds: 35), // TODO: implementation missing
     bool autoConnect = false, // TODO: implementation missing
     int? mtu = 512, // TODO: implementation missing
@@ -156,6 +158,7 @@ class BluetoothDeviceWindows extends FBP.BluetoothDevice {
               descriptors: [],
               // TODO: implementation missing
               propertiesWinBle: e.properties,
+              instanceId: instanceId,
             ),
           ),
         ];
@@ -172,6 +175,7 @@ class BluetoothDeviceWindows extends FBP.BluetoothDevice {
             characteristics: FlutterBluePlusWindows._characteristicCache[remoteId]![p]!,
             // TODO: implementation missing
             includedServices: [],
+            instanceId: instanceId,
           ),
         )
       ];
